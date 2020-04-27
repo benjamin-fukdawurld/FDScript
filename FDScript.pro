@@ -11,15 +11,19 @@ CONFIG -= qt
 
 DESTDIR = ../build/lib
 MAKEFILE = ../build/makefiles/$${TARGET}
-OBJECTS_DIR = ../build/.obj/$${TARGET}
+OBJECTS_DIR = ../build/obj/$${TARGET}
 
-LIBS += -Lbuild/lib
+LIBS += -L../build/lib
 
 INCLUDEPATH += include \
 
 SOURCES += \
+    src/BaseInterpreter.cpp \
+    src/BaseValue.cpp
 
 HEADERS += \
+    include/FDScript/BaseInterpreter.h \
+    include/FDScript/BaseValue.h
 
 unix {
     target.path = /usr/lib

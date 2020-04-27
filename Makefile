@@ -37,10 +37,10 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = FDScript1.0.0
-DISTDIR = /home/benjamin/dev/FanatikDevelopment/build/.obj/FDScript/FDScript1.0.0
+DISTDIR = /home/benjamin/dev/FanatikDevelopment/build/obj/FDScript/FDScript1.0.0
 LINK          = g++
 LFLAGS        = -shared -Wl,-soname,libFDScript.so.1
-LIBS          = $(SUBLIBS) -Lbuild/lib   
+LIBS          = $(SUBLIBS) -L../build/lib   
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -48,12 +48,14 @@ STRIP         = strip
 
 ####### Output directory
 
-OBJECTS_DIR   = ../build/.obj/FDScript/
+OBJECTS_DIR   = ../build/obj/FDScript/
 
 ####### Files
 
-SOURCES       =  
-OBJECTS       = 
+SOURCES       = src/BaseInterpreter.cpp \
+		src/BaseValue.cpp 
+OBJECTS       = ../build/obj/FDScript/BaseInterpreter.o \
+		../build/obj/FDScript/BaseValue.o
 DIST          = ../../../Qt/5.13.2/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../Qt/5.13.2/gcc_64/mkspecs/common/unix.conf \
 		../../../Qt/5.13.2/gcc_64/mkspecs/common/linux.conf \
@@ -244,7 +246,9 @@ DIST          = ../../../Qt/5.13.2/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../Qt/5.13.2/gcc_64/mkspecs/features/exceptions.prf \
 		../../../Qt/5.13.2/gcc_64/mkspecs/features/yacc.prf \
 		../../../Qt/5.13.2/gcc_64/mkspecs/features/lex.prf \
-		FDScript.pro  
+		FDScript.pro include/FDScript/BaseInterpreter.h \
+		include/FDScript/BaseValue.h src/BaseInterpreter.cpp \
+		src/BaseValue.cpp
 QMAKE_TARGET  = FDScript
 DESTDIR       = ../build/lib/
 TARGET        = libFDScript.so.1.0.0
@@ -682,6 +686,7 @@ distdir: FORCE
 
 
 clean: compiler_clean 
+	-$(DEL_FILE) $(OBJECTS)
 	-$(DEL_FILE) *~ core *.core
 
 
@@ -707,6 +712,13 @@ compiler_lex_clean:
 compiler_clean: 
 
 ####### Compile
+
+../build/obj/FDScript/BaseInterpreter.o: src/BaseInterpreter.cpp include/FDScript/BaseInterpreter.h \
+		include/FDScript/BaseValue.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FDScript/BaseInterpreter.o src/BaseInterpreter.cpp
+
+../build/obj/FDScript/BaseValue.o: src/BaseValue.cpp include/FDScript/BaseValue.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FDScript/BaseValue.o src/BaseValue.cpp
 
 ####### Install
 
